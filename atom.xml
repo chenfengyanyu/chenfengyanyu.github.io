@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://jartto.wang/"/>
-  <updated>2020-02-16T16:11:27.708Z</updated>
+  <updated>2020-02-17T02:45:49.320Z</updated>
   <id>http://jartto.wang/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="http://jartto.wang/2020/02/16/web-barrager/"/>
     <id>http://jartto.wang/2020/02/16/web-barrager/</id>
     <published>2020-02-16T15:58:47.000Z</published>
-    <updated>2020-02-16T16:11:27.708Z</updated>
+    <updated>2020-02-17T02:45:49.320Z</updated>
     
-    <content type="html"><![CDATA[<p>重大的活动现场一般离不开 <code>PPT</code> 演示，可是如何有效和现场互动呢？这时候弹幕必不可少，静态的 <code>PPT</code> 就略显乏力。有没有一种好的方案可以二者兼得呢？<br><a id="more"></a><br><div class="alert info"><p>如何才能使 <code>PPT</code> 具有交互性，这是一个值得思考的问题！</p></div></p><p>可能很多童鞋想到了，如果使用「网页 <code>PPT</code>」 ，岂不是完美解决了这个问题。本节我们就来提供一种思路，用「<code>PPT</code> + 发射器 + <code>Socket</code>」 实现「极简弹幕方案」。</p><p><strong>关于「网页 <code>PPT</code>」，可以查看我之前的文章「<a href="http://jartto.wang/2019/04/15/amusing-ppt/">酷炫的 <code>HTML5</code> 网页 <code>PPT</code></a>」一探究竟。</strong></p><h4 id="一、效果演示"><a href="#一、效果演示" class="headerlink" title="一、效果演示"></a>一、效果演示</h4><p>我们先通过一个简单的视屏演示一下效果：</p><video src="https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/barrager/demo.mp4" controls="controls" width="100%" height>您的浏览器不支持播放该视频！</video><p>相关代码：<a href="#">Demo 地址</a></p><h4 id="二、方案概括"><a href="#二、方案概括" class="headerlink" title="二、方案概括"></a>二、方案概括</h4><div class="alert info"><p>看完上面的演示，是不是迫不及待想知道答案，下面我们来逐步拆分。</p></div><p>文章排版中，敬请期待!</p><!-- #### 三、PPT 细节#### 四、发射器细节#### 五、Socket 细节#### 六、总结 -->]]></content>
+    <content type="html"><![CDATA[<p>重大的活动现场一般离不开 <code>PPT</code> 演示，可是如何有效和现场互动呢？这时候弹幕必不可少，静态的 <code>PPT</code> 就略显乏力。有没有一种好的方案可以二者兼得呢？<br><a id="more"></a><br><div class="alert info"><p>如何才能使 <code>PPT</code> 具有交互性，这是一个值得思考的问题！</p></div></p><p>可能很多童鞋想到了，如果使用「网页 <code>PPT</code>」 ，岂不是完美解决了这个问题。本节我们就来提供一种思路，用「<code>PPT</code> + 发射器 + <code>Socket</code>」 实现「极简弹幕方案」。</p><p><strong>关于「网页 <code>PPT</code>」，可以查看我之前的文章「<a href="http://jartto.wang/2019/04/15/amusing-ppt/">酷炫的 <code>HTML5</code> 网页 <code>PPT</code></a>」一探究竟。</strong></p><h4 id="一、效果演示"><a href="#一、效果演示" class="headerlink" title="一、效果演示"></a>一、效果演示</h4><p>我们先通过一个简单的视屏演示一下效果：</p><video src="https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/barrager/demo.mp4" controls="controls" width="100%" height>您的浏览器不支持播放该视频！</video><p>相关代码：<a href="#">Demo 地址</a></p><h4 id="二、方案概括"><a href="#二、方案概括" class="headerlink" title="二、方案概括"></a>二、方案概括</h4><div class="alert info"><p>看完上面的演示，是不是迫不及待想知道答案，下面我们来逐步拆分。</p></div><p>先来看看代码结构<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── README.md</span><br><span class="line">├── mobile</span><br><span class="line">│   ├── README.md</span><br><span class="line">│   ├── node_modules</span><br><span class="line">│   ├── package.json</span><br><span class="line">│   ├── public</span><br><span class="line">│   ├── src</span><br><span class="line">│   └── yarn.lock</span><br><span class="line">├── package.json</span><br><span class="line">├── ppt</span><br><span class="line">│   ├── css</span><br><span class="line">│   ├── extras</span><br><span class="line">│   ├── images</span><br><span class="line">│   ├── index.html</span><br><span class="line">│   ├── js</span><br><span class="line">│   └── temp</span><br><span class="line">├── server</span><br><span class="line">│   ├── app.js</span><br><span class="line">│   ├── data</span><br><span class="line">│   ├── node_modules</span><br><span class="line">│   ├── package-lock.json</span><br><span class="line">│   └── package.json</span><br><span class="line">└── yarn.lock</span><br></pre></td></tr></table></figure></p><div class="alert success"><p>我们主要关注以下三个目录：</p></div><p>1.<code>ppt</code><br>使用 <code>impressjs</code> 构建的项目，<code>PPT</code> 演讲「主屏」，主要演示内容区域，同时接收「服务端」推送弹幕信息。</p><p>2.<code>mobile</code><br>移动端，下文称作「发射器」，主要用作现场用户互动向主屏发送弹幕消息。通过 <code>Create React App</code> 生成，技术栈是：<code>React + Antd</code>。</p><p>3.<code>server</code><br>服务端，主要接受用户弹幕，同时广报到主屏，使用 <code>Socket</code> 实现。</p><div class="alert success"><p>启动方式：</p></div><p>1.进入 server 目录，启动服务：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node app.js</span><br></pre></td></tr></table></figure></p><p>此时会启动一个本机 IP 地址的服务。</p><p>2.进入 ppt 目录，使用 http-server 启动站点：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http-server</span><br></pre></td></tr></table></figure></p><p>注意：接口地址需要替换成本机 IP 地址。</p><p>3.进入 mobile 目录，启动发射器：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn start</span><br></pre></td></tr></table></figure></p><p>注意：请求接口需要使用本机 IP 地址。</p><p><a href="https://github.com/chenfengyanyu/barrager-ppt-demo" target="_blank" rel="noopener">Demo</a> 比较简单，主要展示主流程，如果细节过程有问题，欢迎一起探讨。</p><p>文章正在排版中…</p><!-- #### 三、主屏细节#### 四、发射器细节#### 五、服务端细节#### 六、总结 -->]]></content>
     
     <summary type="html">
     
@@ -62,9 +62,9 @@
       <category term="技术博文" scheme="http://jartto.wang/categories/%E6%8A%80%E6%9C%AF%E5%8D%9A%E6%96%87/"/>
     
     
-      <category term="plugin" scheme="http://jartto.wang/tags/plugin/"/>
-    
       <category term="gitbook" scheme="http://jartto.wang/tags/gitbook/"/>
+    
+      <category term="plugin" scheme="http://jartto.wang/tags/plugin/"/>
     
   </entry>
   
