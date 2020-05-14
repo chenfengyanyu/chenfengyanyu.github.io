@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/webp/sence.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/webp/nginx.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/webp/server.png">
-<meta property="og:updated_time" content="2020-05-12T00:10:13.317Z">
+<meta property="og:updated_time" content="2020-05-14T00:20:02.918Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="WebP 方案分析与实践">
 <meta name="twitter:description" content="对于网站来说，图片始终扮演着重要角色。图片大小直接影响网站速度、流量、运营成本以及用户体验。因此，减少图片大小成为网站优化最重要的一个环节。">
@@ -308,14 +308,32 @@
 <p><strong>2.帧内预测</strong><br><code>WebP</code> 有损压缩使用了帧内预测编码，这一技术也被用于 <code>VP8</code> 视频编码中的关键帧压缩。</p>
 <p><code>VP8</code> 有四种常见的帧内预测模型：</p>
 <ul>
-<li><code>H_PRED(horizontal prediction)</code></li>
-<li><code>V_PRED(vertical prediction)</code></li>
-<li><code>DC_PRED(DC prediction)</code></li>
-<li><code>TM_PRED(TrueMotion prediction)</code></li>
+<li><code>H_PRED(horizontal prediction)</code>：像素块中每一行使用其左边一列 <code>Col L</code> 的数据填充；</li>
+<li><code>V_PRED(vertical prediction)</code>：像素块中每一列使用其上边一行 <code>Row A</code> 的数据填充；</li>
+<li><code>DC_PRED(DC prediction)</code>：像素块中每个单元使用 <code>Row A</code> 和 <code>Col L</code> 的所有像素的平均值填充；</li>
+<li><code>TM_PRED(TrueMotion prediction)</code>：混合式，接近真实数据；</li>
 </ul>
+<p>使用哪种分块预测模式是动态决定的。<br><div class="alert info"><p>编码器会将所有可能的预测模式都计算出来，然后选出错误程度最小的模式。</p>
+</div></p>
 <p><strong>3.算法编码</strong><br><code>WebP</code> 使用 <code>Arithmetic entropy encoding</code>，该算法相比 <code>JPEG</code> 上使用的 <code>Huffman encoding</code>，在压缩表现上更出色。</p>
 <p>深入研究，请移步：<a href="#">Compression Techniques</a></p>
-<p>未完待续～</p>
+<h4 id="八、4种常见压缩格式"><a href="#八、4种常见压缩格式" class="headerlink" title="八、4种常见压缩格式"></a>八、4种常见压缩格式</h4><ol>
+<li><p><code>Lossy</code><br>有损压缩基于 <code>VP8</code> 关键帧编码。 <code>VP8</code> 是 一种视频压缩格式，是 <code>VP6</code> 和 <code>VP7</code> 格式的后继格式。</p>
+</li>
+<li><p><code>Lossless</code><br>无损压缩格式由 <code>WebP</code> 团队开发。</p>
+</li>
+<li><p>Alpha<br><code>8</code> 位 <code>Alpha</code> 通道对于图形图像很有用。 <code>Alpha</code> 通道可与有损 <code>RGB</code> 一起使用，该功能目前无法在任何其他格式下使用。</p>
+</li>
+<li><p>Animation<br>它支持真彩色动画图像。</p>
+</li>
+</ol>
+<div class="alert warning"><p>24 位色被称为真彩色，它可以达到人眼分辨的极限，发色数是 1677 万多色，也就是 2 的 24 次方。</p>
+</div>
+<h4 id="九、WebP-方案-ROI"><a href="#九、WebP-方案-ROI" class="headerlink" title="九、WebP 方案 ROI"></a>九、WebP 方案 ROI</h4><p>一般在做技术选型的过程中，我们都要评估引入技术的收益，这也就是我们常说的 <code>ROI</code>。那么如果你决定要使用 <code>WebP</code>，以下的数据可能会对你产生帮助：<br>1.优化后，网站资源大小从 <code>2.6MB</code> 减少到 <code>1.5MB</code>；<br>2.图片大小减少到原来的 <code>1/8</code>；<br>3.同一时间服务器请求数增加 <code>335%</code>，请求时长减少 <code>75%</code>；<br>4.<code>Lighthouse Performance</code> 评分 <code>97</code>，<code>FCP</code>，<code>FMP</code>大概在 <code>0.5-0.7s</code>（和其他优化有关）；           </p>
+<div class="alert danger"><p>网站数据可能不尽相同，以上数据仅供参考。</p>
+</div>
+<h4 id="十、总结"><a href="#十、总结" class="headerlink" title="十、总结"></a>十、总结</h4><p><a href="http://jartto.wang/2020/05/02/webp-practice/">上文</a> 我们从 <code>WebP</code> 背景展开，介绍了它的兼容性、应用场景，以及 4 种实践方案，同时也提到了浏览器如何嗅探 <code>WebP</code> 格式。后半部分主要从原理出发，了解 <code>WebP</code> 格式的算法细节以及压缩格式，由浅入深，逐层剖析。</p>
+<p>文章最后，打个小广告吧。如果你想搭上在线教育的快车，快速成长，不妨加入我们。一起成长，一起学习，一起挑战更多有趣的事情，「跟谁学-高途课堂」欢迎你，请将简历私我～</p>
 
             
         </div>
