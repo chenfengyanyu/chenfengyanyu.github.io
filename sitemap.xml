@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://jartto.wang/2020/07/29/istio-1/</loc>
+    
+    <lastmod>2020-08-03T02:18:03.069Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://jartto.wang/2020/07/15/start-k8s/</loc>
     
-    <lastmod>2020-07-15T00:16:49.136Z</lastmod>
+    <lastmod>2020-07-15T00:18:26.168Z</lastmod>
     
   </url>
   

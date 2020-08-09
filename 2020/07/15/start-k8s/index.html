@@ -29,7 +29,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/k8s/intro.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/k8s/iaas.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/k8s/k8s.png">
-<meta property="og:updated_time" content="2020-07-15T00:16:49.136Z">
+<meta property="og:updated_time" content="2020-07-15T00:18:26.168Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一文了解 Kubernetes">
 <meta name="twitter:description" content="上一节我们着重讲解了 Docker，其实遗留了一个大问题。Docker 虽好用，但面对强大的集群，成千上万的容器，突然感觉不香了。">
@@ -246,7 +246,7 @@
     <div class="post-content markdown" itemprop="articleBody">
         <div class="main-content-wrap">
             <p><a href="http://jartto.wang/2020/07/04/learn-docker/">上一节</a>我们着重讲解了 <code>Docker</code>，其实遗留了一个大问题。<code>Docker</code> 虽好用，但面对强大的集群，成千上万的容器，突然感觉不香了。<br><a id="more"></a><br>这时候就需要我们的主角 <code>Kubernetes</code> 上场了，先来了解一下 <code>K8s</code> 的基本概念，后面再介绍实践，由浅入深步步为营。</p>
-<p><strong>关于 <code>K8s</code> 的基本概念我们将会围绕如下七点展开：</strong><br>1.<code>Docker</code> 的管理痛点<br>2.什么是 <code>K8s</code>？<br>3.云架构 &amp; 云原生<br>4.<code>K8s</code> 架构原理<br>5.<code>K8s</code> 核心组件<br>6.<code>K8s</code> 的服务注册与发现<br>7.关键问题</p>
+<p><strong>关于 <code>K8s</code> 的基本概念，我们将会围绕如下七点展开：</strong><br>1.<code>Docker</code> 的管理痛点<br>2.什么是 <code>K8s</code>？<br>3.云架构 &amp; 云原生<br>4.<code>K8s</code> 架构原理<br>5.<code>K8s</code> 核心组件<br>6.<code>K8s</code> 的服务注册与发现<br>7.关键问题</p>
 <h4 id="一、Docker-的管理痛点"><a href="#一、Docker-的管理痛点" class="headerlink" title="一、Docker 的管理痛点"></a>一、Docker 的管理痛点</h4><p>如果想要将 <code>Docker</code> 应用于庞大的业务实现，是存在困难的<strong>编排</strong>、<strong>管理</strong>和<strong>调度</strong>问题。于是，我们迫切需要一套管理系统，对 <code>Docker</code> 及容器进行更高级更灵活的管理。</p>
 <p><code>Kubernetes</code> 应运而生！<code>Kubernetes</code>，名词源于希腊语，意为「舵手」或「飞行员」。<code>Google</code> 在 <code>2014</code> 年开源了 <code>Kubernetes</code> 项目，建立在 <code>Google</code> 在大规模运行生产工作负载方面拥有十几年的经验的基础上，结合了社区中最好的想法和实践。</p>
 <div class="alert info"><p>K8s 是 Kubernetes 的缩写，用 8 替代了 「ubernete」，下文我们将使用简称。</p>
@@ -451,7 +451,7 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--disabled">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2020/07/29/istio-1/" data-tooltip="了不起的 Istio">
                 
                     <i class="fa fa-angle-left"></i>
                     <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
@@ -529,7 +529,7 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--disabled">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2020/07/29/istio-1/" data-tooltip="了不起的 Istio">
                 
                     <i class="fa fa-angle-left"></i>
                     <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
